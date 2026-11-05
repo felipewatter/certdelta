@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "certdelta-security"
+version = "0.1.0"
+description = "Offline X.509 trust, certificate policy and identity-drift gate for CI/CD"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "Felipe Watter"}]
+keywords = ["security", "pki", "x509", "certificate", "devsecops", "supply-chain", "tls", "sarif"]
+classifiers = ["Development Status :: 3 - Alpha", "Environment :: Console", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3.11", "Programming Language :: Python :: 3.12", "Programming Language :: Python :: 3.13", "Topic :: Security"]
+dependencies = ["cryptography>=46.0.5,<54", "PyYAML>=6.0.2,<7"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.11,<1", "build>=1.2,<2", "pip-audit>=2.7,<3"]
+
+[project.scripts]
+certdelta = "certdelta.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/test_certdelta.py" = ["F841"]
