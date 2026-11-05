@@ -104,7 +104,7 @@ def load_manifest(path: str | Path) -> list[ServiceSpec]:
         if target.suffix.lower() == ".json":
             raw = json.loads(data, object_pairs_hook=_unique_json_pairs)
         else:
-            raw = yaml.load(data, Loader=_UniqueKeyLoader)  # noqa: S506; SafeLoader subclass
+            raw = yaml.load(data, Loader=_UniqueKeyLoader)  # SafeLoader subclass prevents unsafe object construction
     except (yaml.YAMLError, json.JSONDecodeError, UnicodeError) as exc:
         raise InputError(f"Invalid manifest format: {exc}") from exc
     if not isinstance(raw, dict) or type(raw.get("version")) is not int or raw["version"] != 1:
