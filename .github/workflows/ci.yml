@@ -41,7 +41,7 @@ jobs:
       - name: Build distributions
         run: python -m build
       - name: Dependency vulnerability audit
-        run: pip-audit --strict --skip-editable
+        run: pip-audit --strict .
 
   release:
     name: Publish verified v0.1.0
