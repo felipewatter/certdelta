@@ -1,8 +1,8 @@
 """Deterministic certificate lifetime boundaries and identity drift regressions."""
 from datetime import timedelta
 
-from certdelta.inspector import scan
 from certdelta.drift import diff
+from certdelta.inspector import scan
 
 
 def rules(report):
