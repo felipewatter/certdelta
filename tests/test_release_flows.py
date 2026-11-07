@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from datetime import timedelta
 from pathlib import Path
 
 import pytest
@@ -63,8 +64,11 @@ def test_scan_json_and_sarif_round_trip(tmp_path, pki_factory, capsys):
 
 
 def test_timestamp_determinism(tmp_path, pki_factory, capsys):
-    manifest, _, _ = pki_factory(tmp_path)
-    args = ["scan", str(manifest), "--format", "json", "--at", "2026-11-05T10:00:00Z"]
+    manifest, certificate, _ = pki_factory(tmp_path)
+    # Derive the fixed evaluation instant from the fixture validity window.
+    # A hard-coded historical date eventually precedes freshly issued test certs.
+    evaluation = (certificate.not_valid_before_utc + timedelta(days=2)).isoformat().replace("+00:00", "Z")
+    args = ["scan", str(manifest), "--format", "json", "--at", evaluation]
     assert main(args) == 0
     first = capsys.readouterr().out
     assert main(args) == 0
